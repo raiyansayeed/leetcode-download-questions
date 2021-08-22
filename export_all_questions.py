@@ -23,8 +23,14 @@ def update_question_links(question_links):
   links = links.split('\n')
 
   for each in links:
-    if '/problems/' in each:
-      question_links.append(each)
+    question_links.append(each)
+
+def get_section(section_text):
+  global htmlstr
+  htmlstr += '<div>'
+  htmlstr += f'<h1>{section_text[1:]}</h1>'
+  htmlstr += '</div>'
+  htmlstr += '<p style="page-break-before: always" ></p>'
 
 def get_question(question_link):
   slug = question_link.split('https://leetcode.com/problems/', 1)[1]
@@ -35,7 +41,7 @@ def get_question(question_link):
 
   global htmlstr
   htmlstr += '<div>'
-  htmlstr += f'<h1>{x.data.question.title}</h1>'
+  htmlstr += f'<h2>{x.data.question.title}</h2>'
   htmlstr += x.data.question.content 
   htmlstr += '</div>'
   htmlstr += '<p style="page-break-before: always" ></p>'
@@ -43,10 +49,14 @@ def get_question(question_link):
 def main():
   question_links = []
   update_question_links(question_links)
-  for each_question_link in question_links:
+  for line in question_links:
     try:
-      get_question(each_question_link)
-      print(each_question_link)
+      if line[0] == '~':
+        get_section(line)
+      else:
+        get_question(line)
+      
+      print(line)
       print('------------------------------')
 
     except:
