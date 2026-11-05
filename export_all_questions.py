@@ -35,7 +35,7 @@ def get_section(section_text):
 def get_question(question_link):
   slug = question_link.split('https://leetcode.com/problems/', 1)[1]
   baseJSON['variables']['titleSlug'] = slug
-  resp = requests.get(graphQLEndpoint, json=baseJSON)
+  resp = requests.get(graphQLEndpoint, json=baseJSON, timeout=30)
 
   x = json.loads(resp.text, object_hook=lambda d: SimpleNamespace(**d))
 
